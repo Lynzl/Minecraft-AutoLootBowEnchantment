@@ -39,14 +39,14 @@ public class AutoLootBowEnchantment {
 
     public static final String MODID = "autolootbowenchantment";
 
-    public static final DeferredRegister<Enchantment> ENCHANTMENTS_REGISTER = new DeferredRegister<>(ForgeRegistries.ENCHANTMENTS, MODID);
-    public static final RegistryObject<Enchantment> AUTO_LOOT_ENCHANTMENT = ENCHANTMENTS_REGISTER.register("autoloot", AutoLootEnchantment::new);
+    public static final DeferredRegister<Enchantment> ENCHANTMENTS_REGISTRY = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, MODID);
+    public static final RegistryObject<Enchantment> AUTO_LOOT_ENCHANTMENT = ENCHANTMENTS_REGISTRY.register("autoloot", AutoLootEnchantment::new);
 
     private static final Logger LOGGER = LogManager.getLogger(MODID);
 
     public AutoLootBowEnchantment() {
 
-        ENCHANTMENTS_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ENCHANTMENTS_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
         MinecraftForge.EVENT_BUS.register(this);
 
     }
@@ -58,7 +58,7 @@ public class AutoLootBowEnchantment {
 
         ArrowEntity arrow = (ArrowEntity) entity;
 
-        Entity shooter = arrow.getShooter();
+        Entity shooter = arrow.func_234616_v_();
         if (shooter == null) return;
 
         boolean autoLoot = false;
@@ -97,7 +97,7 @@ public class AutoLootBowEnchantment {
         Entity killer = event.getSource().getTrueSource();
         if (killer == null) return;
 
-        BlockPos killerPos = killer.getPosition();
+        BlockPos killerPos = killer.func_233580_cy_();
 
         Collection<ItemEntity> drops = event.getDrops();
 
@@ -120,7 +120,7 @@ public class AutoLootBowEnchantment {
 
         World world = killer.getEntityWorld();
 
-        BlockPos killerPos = killer.getPosition();
+        BlockPos killerPos = killer.func_233580_cy_();
 
         int experience = event.getDroppedExperience();
         while (experience > 0) {
